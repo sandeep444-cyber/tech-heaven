@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Your Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Poppins:wght@600&family=Montserrat:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #202124;
+        }
+        
+        .review-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+            width: 440px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: 22px;
+            font-weight: 500;
+            margin: 0 0 16px 0;
+        }
+        
+        .stars-container {
+            direction: rtl;
+            margin: 24px 0;
+        }
+        
+        .star {
+            font-size: 48px;
+            color: #dadce0;
+            cursor: pointer;
+            transition: color 0.2s;
+            display: inline-block;
+            margin: 0 4px;
+        }
+        
+        .star:hover,
+        .star:hover ~ .star {
+            color: #fbbc04;
+        }
+        
+        .star.selected,
+        .star.selected ~ .star {
+            color: #fbbc04;
+        }
+        
+        .feedback-message {
+            margin: 24px 0;
+            font-size: 16px;
+            min-height: 24px;
+        }
+        
+        .countdown {
+            font-size: 18px;
+            font-weight: 500;
+            color: #1a73e8;
+        }
+        
+        .buttons {
+            display: none;
+            margin-top: 24px;
+        }
+        
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #1765cc;
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: #1a73e8;
+            margin-right: 8px;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #f1f3f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <!-- Store Name with Emojis and Stylish Inline CSS -->
+        <div style="font-family: 'Pacifico', cursive; font-size: 32px; color: #FF6B6B; margin-bottom: 5px; text-shadow: 1px 1px 3px rgba(0,0,0,0.1);">
+             Tech Haven 
+        </div>
+        <div style="font-family: 'Poppins', sans-serif; font-size: 16px; color: #5f6368; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 8px;">
+            <span>🛒 Premium Electronics</span>
+            <span>•</span>
+            <span>📱 Smart Gadgets</span>
+            <span>•</span>
+            <span>💻 Tech Solutions</span>
+        </div>
+        
+        <div style="background: linear-gradient(90deg, #FF9A9E 0%, #FAD0C4 100%); height: 3px; width: 100%; margin-bottom: 20px; border-radius: 3px;"></div>
+        
+        <img src="https://th.bing.com/th/id/OIP.flV_HAhkgpxUwwDRW-5p9AHaHa?w=152&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Google" class="logo">
+        <h1>How would you rate your experience? 🤔</h1>
+        
+        <div class="stars-container">
+            <span class="star" data-rating="5">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="1">★</span>
+        </div>
+        
+        <div class="feedback-message" id="feedbackMessage"></div>
+        
+        <div class="buttons" id="buttons">
+            <button class="secondary-btn" id="cancelBtn"> Cancel</button>
+            <button id="submitBtn">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        const stars = document.querySelectorAll('.star');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+        const buttons = document.getElementById('buttons');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        let selectedRating = 0;
+        
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                selectedRating = parseInt(star.getAttribute('data-rating'));
+                
+                // Update star colors
+                stars.forEach(s => {
+                    s.classList.remove('selected');
+                    if (parseInt(s.getAttribute('data-rating')) <= selectedRating) {
+                        s.classList.add('selected');
+                    }
+                });
+                
+                // Show appropriate message with emojis
+                if (selectedRating >= 3) {
+                    feedbackMessage.innerHTML = ' Thank you for your positive feedback!';
+                    buttons.style.display = 'block';
+                    submitBtn.textContent = ' Submit';
+                } else {
+                    feedbackMessage.innerHTML = ' We appreciate your honest feedback.';
+                    buttons.style.display = 'block';
+                    submitBtn.textContent = ' Submit';
+                }
+            });
+        });
+        
+        submitBtn.addEventListener('click', () => {
+            if (selectedRating >= 3) {
+                // For 3,4,5 stars - show countdown and redirect
+                feedbackMessage.innerHTML = '⭐ Please give your best review! Redirecting in <span class="countdown">3</span> seconds...';
+                buttons.style.display = 'none';
+                
+                let count = 3;
+                const countdownElement = document.querySelector('.countdown');
+                
+                const countdown = setInterval(() => {
+                    count--;
+                    countdownElement.textContent = count;
+                    
+                    if (count <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = 'https://search.google.com/local/writereview?placeid=ChIJF0bfPlyVlTkRqosSAZQa0XA'; // Replace with your actual URL
+                    }
+                }, 1000);
+            } else {
+                // For 1,2 stars - show thank you message
+                feedbackMessage.innerHTML = '💙 Thank you for your review. We\'ll use this to improve!';
+                buttons.style.display = 'none';
+                
+                // Reset stars after delay
+                setTimeout(() => {
+                    stars.forEach(s => s.classList.remove('selected'));
+                    feedbackMessage.innerHTML = '';
+                    selectedRating = 0;
+                }, 3000);
+            }
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            stars.forEach(s => s.classList.remove('selected'));
+            feedbackMessage.innerHTML = '';
+            buttons.style.display = 'none';
+            selectedRating = 0;
+        });
+    </script>
+</body>
+</html>
